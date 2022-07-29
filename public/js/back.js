@@ -10581,7 +10581,7 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\Users\omarb\Boolean-Copia\2-Git-Hub\7-Laravel-gitHub\Progetto-parte4\laravel-api\resources\js\back.js */"./resources/js/back.js");
+module.exports = __webpack_require__(/*! C:\Users\omarb\Boolean-Copia\2-Git-Hub\7-Laravel-gitHub\Progetto-parte5\laravel-boolpress\resources\js\back.js */"./resources/js/back.js");
 
 
 /***/ })

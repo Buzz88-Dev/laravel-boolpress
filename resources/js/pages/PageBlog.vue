@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div>
         <h1 class="text-center">Boolpress</h1>
         <div class="row g-2">
             <div v-for="post in posts" :key="post.id" class="col-sm-6 col-md-4">
@@ -35,7 +35,7 @@
 
 <script>
 export default {
-    name : 'App',
+    name : 'PageBlog',
 
     data(){
         return {
