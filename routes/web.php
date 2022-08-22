@@ -14,9 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('guests.home');
-})->name('home');
+// Route::get('/', function () {
+//     return view('guests.home');
+// })->name('home');
 
 Auth::routes(); // login, password, logout, register; queste rotte son gestite da Auth (crea 11 rotte; funzione come resource che ne crea 7 pero)
 
@@ -34,3 +34,8 @@ Route::middleware('auth')
         Route::resource('categories', 'CategoryController');
     });
 // con questo codice definisco i prefissi
+
+
+Route::get("{any?}", function () {
+    return view('guests.home');
+})->where("any", ".*")->name('home'); // ".*" : rotta che prende tutto

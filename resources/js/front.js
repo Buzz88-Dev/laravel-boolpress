@@ -11,6 +11,7 @@ import PageBlog from './pages/PageBlog.vue';
 import PageAbout from './pages/PageAbout.vue';
 import PageContacts from './pages/PageContacts.vue';
 import PageShow from './pages/PageShow.vue';
+import Page404 from './pages/Page404.vue';
 
 
 const routes = [
@@ -54,10 +55,17 @@ const routes = [
         props: true,   // analizzare documentazione Vue Router
     },
 
+    {
+        path: '*',
+        name: 'page404',
+        component: Page404,
+    },
+
 ]
 
 const router = new VueRouter({
-    routes
+    routes,
+    mode: 'history',
 })
 
 Vue.use(VueRouter)   // dentro alla parentesi ci vuole il nome indicato in riga 5; diciamo a Vue di usare il plugin vue-router

@@ -1,20 +1,15 @@
 <template>
     <div>
-        Sono la show di {{ post }}
+        <h1>404: Pagina non trovata</h1>
     </div>
 </template>
 
 <script>
-
 export default {
-    name: 'PageShow',
-
-    props: {
-        post: String,
-    },
-
+    name : 'Page404',
 }
 </script>
 
 <style lang="scss" scoped>
+
 </style>
