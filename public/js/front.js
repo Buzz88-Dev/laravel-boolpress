@@ -27358,7 +27358,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _pages_PageAbout_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./pages/PageAbout.vue */ "./resources/js/pages/PageAbout.vue");
 /* harmony import */ var _pages_PageContacts_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./pages/PageContacts.vue */ "./resources/js/pages/PageContacts.vue");
 /* harmony import */ var _pages_PageShow_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./pages/PageShow.vue */ "./resources/js/pages/PageShow.vue");
-/* harmony import */ var _pages_Page404_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./pages/Page404.vue */ "./resources/js/pages/Page404.vue");
+/* harmony import */ var _pages_Page404_vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./pages/Page404.vue */ "./resources/js/pages/Page404.vue");
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js"); // window.Vue = require('vue'); importiamo la libreria Vue
 
 
@@ -27403,7 +27403,7 @@ var routes = [{
   component: _pages_PageContacts_vue__WEBPACK_IMPORTED_MODULE_6__["default"]
 }, {
   // rotta 5:  questa è la pagina di dettaglio di un post
-  path: '/blog/:slug',
+  path: '/blog/:post',
   name: 'show',
   component: _pages_PageShow_vue__WEBPACK_IMPORTED_MODULE_7__["default"],
   props: true // analizzare documentazione Vue Router
@@ -27411,7 +27411,7 @@ var routes = [{
 }, {
   path: '*',
   name: 'page404',
-  component: _pages_Page404_vue__WEBPACK_IMPORTED_MODULE_9__["default"]
+  component: _pages_Page404_vue__WEBPACK_IMPORTED_MODULE_8__["default"]
 }];
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   routes: routes,
