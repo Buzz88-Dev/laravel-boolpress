@@ -37,6 +37,22 @@ class PostSeeder extends Seeder
             $post->category_id = $faker->randomElement($categories_ids);
             // $post->title = 'Ciao a tutti!@';
             $post->slug = Post::getSlug($post->title);
+
+
+
+            // $post->image = 'https://picsum.photos/id/' . rand(1, 300) . '/500/300';
+
+            // si può fare anche in altri modi
+            $number = rand(1, 23);
+            if ($number) {
+                 $contents = new File(__DIR__ . '/../../storage/app/immagini/immagine(' . $number . ').jpg');
+                 // $tmp_img_url = $faker->image();
+                 $post->image = Storage::put('uploads', $contents);
+            } else {
+                 $post->image = null;
+            }
+
+
             $post->image = 'https://picsum.photos/id/' . rand(1,300) . '/500/300';
             $post->content = $faker->paragraphs(rand(2,10), true);
             $post->excerpt = $faker->paragraph();
