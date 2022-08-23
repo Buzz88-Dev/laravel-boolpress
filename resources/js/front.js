@@ -49,7 +49,7 @@ const routes = [
 
     {
         // rotta 5:  questa è la pagina di dettaglio di un post
-        path: '/blog/:post',
+        path: '/blog/:slug',
         name: 'show',
         component: PageShow,
         props: true,   // analizzare documentazione Vue Router

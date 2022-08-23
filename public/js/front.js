@@ -5219,7 +5219,8 @@ __webpack_require__.r(__webpack_exports__);
     var _this = this;
 
     // qui facciamo la richiesta con axios di tipo get
-    axios.get('http://127.0.0.1:8000/api/posts').then(function (res) {
+    axios.get('/api/posts') // o 'http://127.0.0.1:8000/api/posts'
+    .then(function (res) {
       _this.posts = res.data.response.data; // me ne da 2 perche in PostController ho indicato: $per_page = $request->query('per_page', 2);
 
       console.log(_this.posts);
@@ -5257,7 +5258,21 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'PageHome'
+  name: 'PageHome',
+  data: function data() {
+    return {
+      posts: []
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    axios.get('/api/posts/random').then(function (res) {
+      if (res.data.success) {
+        _this.posts = res.data.result;
+      }
+    });
+  }
 });
 
 /***/ }),
@@ -5271,10 +5286,33 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Page404_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Page404.vue */ "./resources/js/pages/Page404.vue");
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'PageShow',
+  components: {
+    Page404: _Page404_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
   props: {
-    post: String
+    slug: String // in front.js path: '/blog/:post',
+
+  },
+  data: function data() {
+    return {
+      is404: false,
+      post: null
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    axios.get('/api/posts/' + this.slug).then(function (res) {
+      if (res.data.success) {
+        _this.post = res.data.result; // result è collegato a 'result' => $post della funzione show() in PostController
+      } else {
+        _this.is404 = true;
+      }
+    });
   }
 });
 
@@ -5613,7 +5651,31 @@ var render = function render() {
   var _vm = this,
       _c = _vm._self._c;
 
-  return _c("div", [_vm._v("\n    Home Page\n")]);
+  return _c("div", [_c("h1", {
+    staticClass: "text-center"
+  }, [_vm._v("Benvenuti in Boolpress")]), _vm._v(" "), _c("div", [_c("div", {
+    staticClass: "row g-2"
+  }, _vm._l(_vm.posts, function (post) {
+    return _c("div", {
+      key: post.slug,
+      staticClass: "col-sm-6 col-md-4"
+    }, [_c("router-link", {
+      attrs: {
+        to: {
+          name: "show",
+          params: {
+            slug: post.slug
+          }
+        }
+      }
+    }, [_c("img", {
+      staticClass: "img-fluid",
+      attrs: {
+        src: post.image,
+        alt: post.title
+      }
+    })])], 1);
+  }), 0)])]);
 };
 
 var staticRenderFns = [];
@@ -5637,7 +5699,19 @@ var render = function render() {
   var _vm = this,
       _c = _vm._self._c;
 
-  return _c("div", [_vm._v("\n    Sono la show di " + _vm._s(_vm.post) + "\n")]);
+  return _vm.is404 ? _c("Page404") : _vm.post ? _c("div", [_c("h1", [_vm._v(_vm._s(_vm.post.title))]), _vm._v(" "), _c("h2", [_vm._v("Written by: " + _vm._s(_vm.post.user.name))]), _vm._v(" "), _c("h3", [_vm._v("In category: " + _vm._s(_vm.post.category.name))]), _vm._v(" "), _c("div", {
+    staticClass: "tags"
+  }, _vm._l(_vm.post.tags, function (tag) {
+    return _c("span", {
+      key: tag.id,
+      staticClass: "tag"
+    }, [_vm._v("\n            " + _vm._s(tag.name) + "\n        ")]);
+  }), 0), _vm._v(" "), _c("img", {
+    attrs: {
+      src: _vm.post.image,
+      alt: _vm.post.title
+    }
+  }), _vm._v(" "), _c("p", [_vm._v(_vm._s(_vm.post.content))])]) : _vm._e();
 };
 
 var staticRenderFns = [];
@@ -27403,7 +27477,7 @@ var routes = [{
   component: _pages_PageContacts_vue__WEBPACK_IMPORTED_MODULE_6__["default"]
 }, {
   // rotta 5:  questa è la pagina di dettaglio di un post
-  path: '/blog/:post',
+  path: '/blog/:slug',
   name: 'show',
   component: _pages_PageShow_vue__WEBPACK_IMPORTED_MODULE_7__["default"],
   props: true // analizzare documentazione Vue Router

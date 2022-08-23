@@ -43,7 +43,7 @@ export default {
 
     created() {
         // qui facciamo la richiesta con axios di tipo get
-        axios.get('http://127.0.0.1:8000/api/posts')
+        axios.get('/api/posts')    // o 'http://127.0.0.1:8000/api/posts'
             .then(res => {
                 this.posts = res.data.response.data;   // me ne da 2 perche in PostController ho indicato: $per_page = $request->query('per_page', 2);
                 console.log(this.posts);

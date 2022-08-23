@@ -21,3 +21,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/posts','Api\PostController@index')->name('api.posts.index'); //le uniche due rotte che vogliamo sono la index e lo show
 // in realta scriviamo /posts ma nella route è come se scrivessi: http://127.0.0.1:8000/api/posts
 // le view non ci sono perche è un api e quindi mi ritorna json
+
+Route::get('/posts/random', 'Api\PostController@random')->name('api.posts.random');
+
+Route::get('/posts/{post}','Api\PostController@show')->name('api.posts.show');
