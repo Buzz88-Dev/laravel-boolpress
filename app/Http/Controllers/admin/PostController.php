@@ -52,16 +52,18 @@ class PostController extends Controller
             'excerpt'   => 'nullable|string|max:200',
         ]);
 
-        $form_data = $request->all();
+        $data = $request->all();
 
-        // salvare l immagine in public
-        $img_path = Storage::put('uploads', $form_data['image']);
+        if (key_exists('image', $data)) {
+            // salvare l immagine in public
+            $img_path = Storage::put('uploads', $data['image']);
 
-        // aggiornare il valore della chiave image con il nome dell immagine appena creata
-        $form_data['image'] = $img_path;
+            // aggiornare il valore della chiave image con il nome dell immagine appena creata
+            $data['image'] = $img_path;
+        }
 
         // dump($request->all());  // se la validation non passa torniamo nel form; se invece le validation passano ci stampera il dump; dopo aver inserito i campi, salvare e decommentare questo dump()
-        $data = $form_data + [
+        $data = $data + [
             'user_id' => Auth::id(),
         ];
         // $request mi ritorna un array
@@ -110,11 +112,25 @@ class PostController extends Controller
             'category_id'  => 'required|integer|exists:categories,id',
             'tags'      => 'nullable|array',
             'tags.*'    => 'integer|exists:tags,id',
-            'image'     => 'required_without:content|nullable|url',
+            // 'image'     => 'required_without:content|nullable|url',
+            'image'     => 'required_without:content|nullable|file|image|max:1024',  // dimensione max in kilobytes
             'content'   => 'required_without:image|nullable|string|max:5000',
             'excerpt'   => 'nullable|string|max:200',
         ]);
         $data = $request->all();
+
+        if (key_exists('image', $data)) {
+            // eliminare il file precedente se esiste
+            if ($post->image) {   // se $post->image non è NULL va a eliminare l immagine precedentemente caricata; funziona anche se non c e l immagine
+                Storage::delete($post->image);
+            }
+
+            // caricare il nuovo file
+            $img_path = Storage::put('uploads', $data['image']);
+
+            // aggiornare l'array $data con il percorso del file appena creato
+            $data['image'] = $img_path;
+        }
 
         // aggiornare il database
         $post->update($data);
