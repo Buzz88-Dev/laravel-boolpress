@@ -8,6 +8,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -45,13 +46,22 @@ class PostController extends Controller
             'category_id'  => 'required|integer|exists:categories,id',
             'tags'      => 'nullable|array',
             'tags.*'    => 'integer|exists:tags,id',
-            'image'     => 'required_without:content|nullable|url',
+            // 'image'     => 'required_without:content|nullable|url',
+            'image'     => 'required_without:content|nullable|file|image|max:1024',  // dimensione max in kilobytes
             'content'   => 'required_without:image|nullable|string|max:5000',
             'excerpt'   => 'nullable|string|max:200',
         ]);
 
+        $form_data = $request->all();
+
+        // salvare l immagine in public
+        $img_path = Storage::put('uploads', $form_data['image']);
+
+        // aggiornare il valore della chiave image con il nome dell immagine appena creata
+        $form_data['image'] = $img_path;
+
         // dump($request->all());  // se la validation non passa torniamo nel form; se invece le validation passano ci stampera il dump; dopo aver inserito i campi, salvare e decommentare questo dump()
-        $data = $request->all() + [
+        $data = $form_data + [
             'user_id' => Auth::id(),
         ];
         // $request mi ritorna un array
