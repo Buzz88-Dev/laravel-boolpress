@@ -40,17 +40,17 @@ class PostSeeder extends Seeder
 
 
 
-            // $post->image = 'https://picsum.photos/id/' . rand(1, 300) . '/500/300';
+            $post->image = 'https://picsum.photos/id/' . rand(1, 300) . '/500/300';
 
             // si può fare anche in altri modi
-            $number = rand(1, 23);
-            if ($number) {
-                 $contents = new File(__DIR__ . '/../../storage/app/immagini/immagine(' . $number . ').jpg');
-                 // $tmp_img_url = $faker->image();
-                 $post->image = Storage::put('uploads', $contents);
-            } else {
-                 $post->image = null;
-            }
+            // $number = rand(1, 23);
+            // if ($number) {
+            //      $contents = new File(__DIR__ . '/../../storage/app/immagini/immagine(' . $number . ').jpg');
+            //      // $tmp_img_url = $faker->image();
+            //      $post->image = Storage::put('uploads', $contents);
+            // } else {
+            //      $post->image = null;
+            // }
 
 
             $post->image = 'https://picsum.photos/id/' . rand(1,300) . '/500/300';
