@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Lead;
+use App\Mail\LeadToLead;
+use App\Mail\LeadToAdmin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
-use App\Mail\LeadToLead;
 
 class LeadController extends Controller
 {
@@ -48,13 +49,28 @@ class LeadController extends Controller
             ]);
         }
 
-        // salvare nel database
-        $lead = Lead::create($form_data);
+        try {
+            // salvare nel db
+            // throw new \Exception("Error Processing Request", 1); // riga per generare un errore di prova; decommentare
+            $lead = Lead::create($form_data);
 
-        // inviare mail al lead (la persona che ci ha contattato)
-        Mail::to($lead->email)->send(new LeadToLead());
+            // inviare mail al lead
+            Mail::to($lead->email)->send(new LeadToLead($lead));
+            // inviare mail all'admin del sito
+            Mail::to('admin@bool.press')->send(new LeadToAdmin($lead));
+        } catch (\Exception $e) {
+            return response()->json([
+                'success'   => false,
+                'response'  => 'C\'è stato un errore, riprova',   // analizzare bene collegamento a PageContacts.vue
+            ], 500);
 
-        // inviare mail all'admin del sito
+
+        }
+
+        return response()->json([
+            'success'   => true,
+            'response'  => 'Messaggio inviato, verrai contattato al più presto',  // analizzare bene collegamento a PageContacts.vue
+        ]);
     }
 
 

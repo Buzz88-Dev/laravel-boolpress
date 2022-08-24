@@ -7,11 +7,14 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Ciao {{ $lead->name }}</h1>
-    <p>
-        Abbiamo ricevuto il tuo messaggio:
-    </p>
-    <p>{{ $lead->message }}</p>
-    <p>Qualcuno dei nostri ti risponderà al più presto</p>
+    <h1>Hey Admin</h1>
+    <p>C'è un nuovo lead:</p>
+    <div>
+        <b>Name</b>: {{ $lead->name }}<br>
+        <b>Email</b>: {{ $lead->email }}<br>
+        <b>Message</b>:<br>
+        {{ $lead->name }}
+    </div>
+    <h2>Rispondi al più presto</h2>
 </body>
 </html>
