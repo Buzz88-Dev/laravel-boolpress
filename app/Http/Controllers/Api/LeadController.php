@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Models\Lead;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use App\Mail\LeadToLead;
 
 class LeadController extends Controller
 {
@@ -24,6 +26,7 @@ class LeadController extends Controller
 
     public function store(Request $request)
     {
+        $form_data = $request->all();
         // validation
         $validation_rules = [
             'name'          => 'required|string|max:100',
@@ -36,7 +39,7 @@ class LeadController extends Controller
                                                // sulla $request che ci è arrivata chiamiamo il metodo validate()
 
         // per avere più controllo nel comportamento del validator
-        $validator = Validator::make($request->all(), $validation_rules);
+        $validator = Validator::make($form_data, $validation_rules);
 
         if ($validator->fails()) {
             return response()->json([
@@ -46,10 +49,10 @@ class LeadController extends Controller
         }
 
         // salvare nel database
+        $lead = Lead::create($form_data);
 
-
-        // inviare mail al lead
-
+        // inviare mail al lead (la persona che ci ha contattato)
+        Mail::to($lead->email)->send(new LeadToLead());
 
         // inviare mail all'admin del sito
     }
