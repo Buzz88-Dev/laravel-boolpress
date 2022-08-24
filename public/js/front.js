@@ -5242,8 +5242,34 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'PageContacts'
+  name: 'PageContacts',
+  data: function data() {
+    return {
+      name: '',
+      email: '',
+      message: '',
+      mailinglist: true
+    };
+  },
+  methods: {
+    submitMessage: function submitMessage() {
+      console.log('funziona');
+      axios.post('/api/leads/', {
+        // creiamo la rotta come primo argomento; i dati come secondo argomento
+        name: this.name,
+        email: this.email,
+        message: this.message,
+        mailinglist: this.mailinglist
+      }).then(function (res) {
+        return console.log(res.data);
+      }); // inviati i dati dal form al backend dobbiamo stare in ascolto per dire all utente se sia andato tutto a posto
+      // nel res abbiamo .data (è dovuto ad axios perche formatta cosi la risposta)
+    }
+  }
 });
 
 /***/ }),
@@ -5626,21 +5652,10 @@ var render = function render() {
     on: {
       submit: function submit($event) {
         $event.preventDefault();
+        return _vm.submitMessage.apply(null, arguments);
       }
     }
-  }, [_vm._m(0), _vm._v(" "), _vm._m(1), _vm._v(" "), _vm._m(2), _vm._v(" "), _vm._m(3), _vm._v(" "), _c("button", {
-    staticClass: "btn btn-primary",
-    attrs: {
-      type: "submit"
-    }
-  }, [_vm._v("Send")])])]);
-};
-
-var staticRenderFns = [function () {
-  var _vm = this,
-      _c = _vm._self._c;
-
-  return _c("div", {
+  }, [_c("div", {
     staticClass: "mb-3"
   }, [_c("label", {
     staticClass: "form-label",
@@ -5648,18 +5663,28 @@ var staticRenderFns = [function () {
       "for": "name"
     }
   }, [_vm._v("Name")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.name,
+      expression: "name"
+    }],
     staticClass: "form-control",
     attrs: {
       type: "text",
       name: "name",
       id: "name"
+    },
+    domProps: {
+      value: _vm.name
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.name = $event.target.value;
+      }
     }
-  })]);
-}, function () {
-  var _vm = this,
-      _c = _vm._self._c;
-
-  return _c("div", {
+  })]), _vm._v(" "), _c("div", {
     staticClass: "mb-3"
   }, [_c("label", {
     staticClass: "form-label",
@@ -5667,18 +5692,28 @@ var staticRenderFns = [function () {
       "for": "email"
     }
   }, [_vm._v("Email")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.email,
+      expression: "email"
+    }],
     staticClass: "form-control",
     attrs: {
       type: "email",
       name: "email",
       id: "email"
+    },
+    domProps: {
+      value: _vm.email
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.email = $event.target.value;
+      }
     }
-  })]);
-}, function () {
-  var _vm = this,
-      _c = _vm._self._c;
-
-  return _c("div", {
+  })]), _vm._v(" "), _c("div", {
     staticClass: "mb-3"
   }, [_c("label", {
     staticClass: "form-label",
@@ -5686,33 +5721,78 @@ var staticRenderFns = [function () {
       "for": "message"
     }
   }, [_vm._v("Message")]), _vm._v(" "), _c("textarea", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.message,
+      expression: "message"
+    }],
     staticClass: "form-control",
     attrs: {
       name: "message",
       id: "message",
       cols: "30",
       rows: "10"
+    },
+    domProps: {
+      value: _vm.message
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.message = $event.target.value;
+      }
     }
-  })]);
-}, function () {
-  var _vm = this,
-      _c = _vm._self._c;
-
-  return _c("div", [_c("input", {
+  })]), _vm._v(" "), _c("div", [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.mailinglist,
+      expression: "mailinglist"
+    }],
     staticClass: "form-check-input",
     attrs: {
       type: "checkbox",
       name: "newsletter",
-      id: "newsletter",
-      checked: ""
+      id: "newsletter"
+    },
+    domProps: {
+      checked: Array.isArray(_vm.mailinglist) ? _vm._i(_vm.mailinglist, null) > -1 : _vm.mailinglist
+    },
+    on: {
+      change: function change($event) {
+        var $$a = _vm.mailinglist,
+            $$el = $event.target,
+            $$c = $$el.checked ? true : false;
+
+        if (Array.isArray($$a)) {
+          var $$v = null,
+              $$i = _vm._i($$a, $$v);
+
+          if ($$el.checked) {
+            $$i < 0 && (_vm.mailinglist = $$a.concat([$$v]));
+          } else {
+            $$i > -1 && (_vm.mailinglist = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
+          }
+        } else {
+          _vm.mailinglist = $$c;
+        }
+      }
     }
   }), _vm._v(" "), _c("label", {
     staticClass: "form-check-label",
     attrs: {
       "for": "newsletter"
     }
-  }, [_vm._v("Iscrivimi alla newsletter")])]);
-}];
+  }, [_vm._v("Iscrivimi alla newsletter")])]), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-primary",
+    attrs: {
+      type: "submit"
+    }
+  }, [_vm._v("Send")])])]);
+};
+
+var staticRenderFns = [];
 render._withStripped = true;
 
 
