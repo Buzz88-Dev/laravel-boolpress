@@ -8,9 +8,9 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    private function fixImageUrl($imgPath) {
-        return $imgPath ? asset('storage/' . $imgPath) : null;
-    }
+    // private function fixImageUrl($imgPath) {
+    //     return $imgPath ? asset('storage/' . $imgPath) : null;
+    // }
     public function index(Request $request)  // il Request è quell oggetto che contiene tutte le informazioni riguardo alla richiesta fatta dall utente (Header, indirizzo, parametri, cookie)
     {
         $per_page_default = 10;
@@ -21,13 +21,13 @@ class PostController extends Controller
             // return response()->json(['success' => false], 400);
             // return response()->json(['success' => false], 400);  // errore 400 lo troviamo in ispector, Network sotto a Status
         };
-        $posts = Post::with('user')->with('category')->with('tags')->paginate($per_page);   // con with('user') mi aggiunge dentro al file json l oggetto user con i suoi dati; stessa cosa per la category
+        $posts = Post::with('user')->with('category')->paginate($per_page);   // con with('user') mi aggiunge dentro al file json l oggetto user con i suoi dati; stessa cosa per la category
         // $posts = Post::paginate(15);
 
-        foreach ($posts as $post) {
-            // $post->image = asset('storage/'. $post->image);
-            $post->image = $this->fixImageUrl($post->image);
-        }
+        // foreach ($posts as $post) {
+        //     // $post->image = asset('storage/'. $post->image);
+        //     $post->image = $this->fixImageUrl($post->image);
+        // }
 
         // return 'sono la index dell api';
         //return response()->json(Post::all());  // con questa sinstassi mi ritorna un array di oggetti dove ogni oggetto rappresenta un data
@@ -43,10 +43,10 @@ class PostController extends Controller
         $sql = Post::with(['user', 'category', 'tags'])->whereNotNull('image')->limit(9)->inRandomOrder();
         $posts = $sql->get();
 
-        foreach ($posts as $post) {
-            // $post->image = asset('storage/'. $post->image);
-            $post->image = $this->fixImageUrl($post->image);
-        }
+        // foreach ($posts as $post) {
+        //     // $post->image = asset('storage/'. $post->image);
+        //     $post->image = $this->fixImageUrl($post->image);
+        // }
 
         return response()->json([
             // 'sql'       => $sql->toSql(), // solo per debugging
@@ -74,4 +74,7 @@ class PostController extends Controller
             ]);
         }
     }
+
+
+    // per usare new File(__DIR__ . '/../../storage/app/immagini/immagine' .$number. '.jpg'); in PostSeeder.php, decommentare i foreach ($posts as $post) e la private function fixImageUrl($imgPath)
 }
